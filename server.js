@@ -1,30 +1,18 @@
-var http = require('http');
-var port = process.env.PORT || 1337;
+var socketServer = require("ws").Server,
+	http = require("http"),
+	express = require("express"),
+	app = express(),
+	port = process.ENV.PORT || 1337;
 
-var server = http.createServer(function(request, response) {
-	var body = "";
-	request.setEncoding("utf8");
-	request.on("data", function(chunk) {
-		body += chunk;
-	});
-	request.on("end", function() {
-		try 
-		{
-			var data = JSON.parse(body);
-			console.log(data);
-
-			response.write(typeof data);
-			response.end();
-		}
-		catch(error)
-		{
-			var msg = "error: " + error.message;
-			
-			console.log(msg);
-			response.statusCode = "400";
-			return response.end(msg);
-		}
-	});
-});
-
+app.use(express.static(__dirname + "/"));
+var server = http.createServer(app);
 server.listen(port);
+
+var ws = new socketServer({ server: server });
+
+ws.on("connection", function(socket) {
+	var interval = 1000;
+	setInterval(function() {
+		socket.send("Hello World!");
+	}, interval);
+});
