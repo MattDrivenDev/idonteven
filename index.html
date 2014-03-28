@@ -4,10 +4,11 @@
 		<script type="text/javascript">
 			var host = location.origin.replace(/^http/, "ws");
 			var ws = new WebSocket(host);
-			ws.onmessage = function(msg) {
-				console.log(msg);
+			ws.onmessage = function(data) {
+				console.log(data);
+				var msg = JSON.parse(data);
 				var li = document.createElement("li");
-				li.innerHtml = msg.data;
+				li.innerHtml = msg;
 				document.querySelector("#pings").appendChild(li);
 			};
 		</script>
