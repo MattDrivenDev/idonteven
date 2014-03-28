@@ -2,7 +2,7 @@ var socketServer = require("ws").Server,
 	http = require("http"),
 	express = require("express"),
 	app = express(),
-	port = process.ENV.PORT || 1337;
+	port = process.env.PORT || 1337;
 
 app.use(express.static(__dirname + "/"));
 var server = http.createServer(app);
