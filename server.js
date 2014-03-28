@@ -13,6 +13,7 @@ var ws = new socketServer({ server: server });
 ws.on("connection", function(socket) {
 	var interval = 1000;
 	setInterval(function() {
-		socket.send("Hello World!");
+		var msg = { text: "Hello World!" };
+		socket.send(JSON.stringify(msg));
 	}, interval);
 });
