@@ -7,7 +7,7 @@
 			ws.onmessage = function(e) {
 				var msg = JSON.parse(e.data);
 				var li = document.createElement("li");
-				li.innerHtml = msg.text;
+				li.innerHTML = msg.text;
 				document.querySelector("#pings").appendChild(li);
 			};
 		</script>
