@@ -28,7 +28,12 @@ ws.on("connection", function(socket) {
 	socket.on("message", function(data) {
 		logger.info("Message received.")
 		var msg = JSON.parse(data);
-		socket.send(JSON.stringify(msg));
+    	ws.broadcast(msg);
 	});
 
 });
+
+ws.broadcast = function(msg) {
+	for(var i in this.clients)
+		this.clients[i].send(JSON.stringify(msg));
+};
