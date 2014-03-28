@@ -11,9 +11,18 @@ server.listen(port);
 var ws = new socketServer({ server: server });
 
 ws.on("connection", function(socket) {
+
 	var interval = 1000;
+	
 	setInterval(function() {
-		var msg = { text: "Hello World!" };
+
+		var msg = { 
+			name: "Azure",
+			text: "Hello World!" 
+		};
+
 		socket.send(JSON.stringify(msg));
+
 	}, interval);
+	
 });

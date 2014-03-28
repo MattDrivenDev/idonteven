@@ -1,19 +1,25 @@
 <html>
 	<head>
 		<title>WebSockets on Azure</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 		<script type="text/javascript">
-			var host = location.origin.replace(/^http/, "ws");
-			var ws = new WebSocket(host);
-			ws.onmessage = function(e) {
-				var msg = JSON.parse(e.data);
-				var li = document.createElement("li");
-				li.innerHTML = msg.text;
-				document.querySelector("#pings").appendChild(li);
-			};
 		</script>
 	</head>	
 	<body>
-		<h1>Messages:</h1>
-		<ul id="pings"></ul>
+		<ul id="chatlog"></ul>
+		<script type="text/javascript">
+			$(function() {
+
+				// Setup the Web Socket Connection
+				var host = location.origin.replace(/^http/, "ws");
+				var ws = new WebSocket(host);
+				
+				ws.onmessage = function(e) {
+					var msg = JSON.parse(e.data);
+					var entry = "<li><strong>" + msg.name + ":<strong> " + msg.text + "</li>";
+					$("#chatlog").append(entry);
+				};
+			});
+		</script>
 	</body>
 </html>
