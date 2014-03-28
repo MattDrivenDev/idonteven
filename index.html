@@ -20,11 +20,13 @@
 					$("#chatlog").append(entry);
 				};
 
-				var echoTest = {
-					name: "browser",
-					text: "Hello Server"
+				ws.onopen = function() {
+					var echoTest = {
+						name: "browser",
+						text: "Hello Server"
+					};
+					ws.send(JSON.stringify(echoTest));
 				};
-				ws.send(JSON.stringify(echoTest));
 			});
 		</script>
 	</body>
