@@ -6,6 +6,13 @@
 		</script>
 	</head>	
 	<body>
+		<form>
+			<label for="nickname">nick:</label><br/>
+			<input type="text" id="nickname"/><br/>
+			<label for="message">message:</label><br/>
+			<input type="text" id="message"/><br/>
+			<input type="button" id="sendbutton" value="Send"/>
+		</form>
 		<ul id="chatlog"></ul>
 		<script type="text/javascript">
 			$(function() {
@@ -20,13 +27,19 @@
 					$("#chatlog").append(entry);
 				};
 
-				ws.onopen = function() {
-					var echoTest = {
-						name: "browser",
-						text: "Hello Server"
+				var sendMessage = function(name, text) {
+					var msg = {
+						name: name,
+						text: text
 					};
-					ws.send(JSON.stringify(echoTest));
+					ws.send(JSON.stringify(msg));
 				};
+
+				$("#sendbutton").click(function() {
+					var name = $("#nickname").val();
+					var text = $("#message").val();
+					sendMessage(name, text);
+				});
 			});
 		</script>
 	</body>

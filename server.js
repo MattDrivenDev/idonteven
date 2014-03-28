@@ -2,6 +2,7 @@ var socketServer = require("ws").Server,
 	http = require("http"),
 	express = require("express"),
 	app = express(),
+	logger = require("./logger"),
 	port = process.env.PORT || 1337;
 
 app.use(express.static(__dirname + "/"));
@@ -10,24 +11,24 @@ server.listen(port);
 
 var ws = new socketServer({ server: server });
 
-// Server pings...
 ws.on("connection", function(socket) {
-	var interval = 60000;
+
+	// Pings...
+	var interval = 10000;
 	setInterval(function() {
+		logger.info("Ping!")
 		var msg = { 
 			name: "Azure",
 			text: "ping..." 
 		};
 		socket.send(JSON.stringify(msg));
 	}, interval);
-});
 
-// Echo messages...s
-ws.on("message", function(data, flags) {
-	var msg = JSON.parse(data);
-	var echo = {
-		name: "echo '" + msg.name + "'",
-		text: msg.text
-	};
-	socket.send(JSON.stringify(echo));
+	// Echo messages...
+	socket.on("message", function(data) {
+		logger.info("Message received.")
+		var msg = JSON.parse(data);
+		socket.send(JSON.stringify(msg));
+	});
+
 });
