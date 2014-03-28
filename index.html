@@ -16,7 +16,7 @@
 				
 				ws.onmessage = function(e) {
 					var msg = JSON.parse(e.data);
-					var entry = "<li><strong>" + msg.name + ":<strong> " + msg.text + "</li>";
+					var entry = "<li><strong>" + msg.name + ":</strong> " + msg.text + "</li>";
 					$("#chatlog").append(entry);
 				};
 			});

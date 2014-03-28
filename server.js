@@ -12,17 +12,15 @@ var ws = new socketServer({ server: server });
 
 ws.on("connection", function(socket) {
 
-	var interval = 1000;
-	
-	setInterval(function() {
 
+	// Server pings...
+	var interval = 60000;
+	setInterval(function() {
 		var msg = { 
 			name: "Azure",
-			text: "Hello World!" 
+			text: "ping..." 
 		};
-
 		socket.send(JSON.stringify(msg));
-
 	}, interval);
-	
+
 });
