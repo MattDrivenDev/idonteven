@@ -19,6 +19,12 @@
 					var entry = "<li><strong>" + msg.name + ":</strong> " + msg.text + "</li>";
 					$("#chatlog").append(entry);
 				};
+
+				var echoTest = {
+					name: "browser",
+					text: "Hello Server"
+				};
+				ws.send(JSON.stringify(echoTest));
 			});
 		</script>
 	</body>

@@ -10,10 +10,8 @@ server.listen(port);
 
 var ws = new socketServer({ server: server });
 
+// Server pings...
 ws.on("connection", function(socket) {
-
-
-	// Server pings...
 	var interval = 60000;
 	setInterval(function() {
 		var msg = { 
@@ -22,5 +20,14 @@ ws.on("connection", function(socket) {
 		};
 		socket.send(JSON.stringify(msg));
 	}, interval);
+});
 
+// Echo messages...s
+ws.on("message", function(data, flags) {
+	var msg = JSON.parse(data);
+	var echo = {
+		name: "echo '" + msg.name + "'",
+		text: msg.text
+	};
+	socket.send(JSON.stringify(echo));
 });
