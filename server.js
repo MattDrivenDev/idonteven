@@ -11,6 +11,7 @@ var server = http.createServer(app);
 server.listen(port);
 
 var ws = new socketServer({ server: server });
+var users = [];
 
 ws.on("connection", function(socket) {
 
@@ -61,11 +62,11 @@ ws.ping = function(socket) {
 
 ws.register = function(socket, user) {
 	logger.info("Registering new user '" + user.name + "'.");
+	user.id = guids.guid();
+	users.push(user);
 	socket.send(JSON.stringify({
 		type: "joinResponse",
-		data: {
-			id: guids.guid(),
-			name: user.name
-		}
+		data: user
 	}));
+	ws.broadcast({ name: "Azure" }, user.name + " has joined the room.");
 };
