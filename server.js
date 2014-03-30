@@ -13,27 +13,26 @@ var ws = new socketServer({ server: server });
 
 ws.on("connection", function(socket) {
 
+	logger.info("New connection.");
+
 	// Pings...
-	var interval = 10000;
-	setInterval(function() {
-		logger.info("Ping!")
-		var msg = { 
-			name: "Azure",
-			text: "ping..." 
-		};
-		socket.send(JSON.stringify(msg));
-	}, interval);
+	setInterval(function() { ws.ping(socket); }, 30000);
 
 	// Echo messages...
-	socket.on("message", function(data) {
-		logger.info("Message received.")
-		var msg = JSON.parse(data);
-    	ws.broadcast(msg);
-	});
+	socket.on("message", function(data) { ws.broadcast(JSON.parse(data)); });
 
 });
 
 ws.broadcast = function(msg) {
+	logger.info("Broadcasting user message...");
 	for(var i in this.clients)
 		this.clients[i].send(JSON.stringify(msg));
+};
+
+ws.ping = function(socket) {
+	logger.info("Ping!");
+	socket.send(JSON.stringify({
+		name: "Azure",
+		text: "ping..."
+	}));
 };
