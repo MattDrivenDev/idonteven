@@ -1,9 +1,16 @@
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>WebSockets on Azure</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="/client/styles.css">
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-		<script type="text/javascript">
-		</script>
+		<script type="text/javascript" src="/client/melonjs-0.9.11.js"></script>
+		<script type="text/javascript" src="/client/game.js"></script>
+		<script type="text/javascript" src="/client/resources.js"></script>
+		<script type="text/javascript" src="/client/screens/title.js"></script>
+		<script type="text/javascript" src="/client/screens/play.js"></script>
+		<script type="text/javascript" src="/client/entities/entities.js"></script>
+		<script type="text/javascript" src="/client/entities/HUD.js"></script>
 	</head>	
 	<body>
 		<div id="join">
@@ -17,6 +24,7 @@
 			<input type="text" id="message"/><br/>
 			<input type="button" id="btnsend" value="Send"/>
 		</div>
+		<div id="screen" style="float:left;height:640px;"></div>
 		<ul id="chatlog"></ul>
 		<script type="text/javascript">
 			$(function() {
@@ -37,6 +45,7 @@
 							$("#join").hide();
 							$("#chat").show();
 							$("#username").append(user.name);
+							game.onload();
 							break;
 						case "chat":
 							var entry = "<li><strong>" + msg.data.name + ":</strong> " + msg.data.text + "</li>";
