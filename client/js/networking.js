@@ -70,10 +70,12 @@ var networking = {
 					break;
 				case "updateAll":
 					var players = msg.data;
+					console.log(players);
 					for(var i in players.length) {
 						var maybePlayer = players[i];
 						var player = me.game.world.getEntityByProp('name', maybePlayer.user.id);
 						if(player == null || player.length == 0) {
+							console.log(maybePlayer);
 							var newPlayer = new game.PlayerEntity(
 								maybePlayer.X, maybePlayer.Y,
 								{ image: "dude", spritewidth: 64, spriteheight: 64 },
