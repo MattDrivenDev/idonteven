@@ -56,7 +56,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
                 // update the entity velocity
                 this.renderable.setCurrentAnimation("left");
                 this.vel.x -= this.accel.x * me.timer.tick;
-                networking.updatePlayer(this.name, this.pos.x, this.pos.y);
+                networking.updatePlayer({id:this.name,name:this.playerName}, this.pos.x, this.pos.y);
             } else if (me.input.isKeyPressed('right')) {
                 // unflip the sprite
                 //this.flipX(false);
@@ -64,7 +64,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
                 this.renderable.setCurrentAnimation("right");
 
                 this.vel.x += this.accel.x * me.timer.tick;
-                networking.updatePlayer(this.name, this.pos.x, this.pos.y);
+                networking.updatePlayer({id:this.name,name:this.playerName}, this.pos.x, this.pos.y);
             } else {
                 this.vel.x = 0;
             }
@@ -75,14 +75,14 @@ game.PlayerEntity = me.ObjectEntity.extend({
                 this.renderable.setCurrentAnimation("up");
                 // update the entity velocity
                 this.vel.y -= this.accel.y * me.timer.tick;
-                networking.updatePlayer(this.name, this.pos.x, this.pos.y);
+                networking.updatePlayer({id:this.name,name:this.playerName}, this.pos.x, this.pos.y);
             } else if (me.input.isKeyPressed('down')) {
                 // unflip the sprite
                 //this.flipX(false);
                 this.renderable.setCurrentAnimation("down");
                 // update the entity velocity
                 this.vel.y += this.accel.y * me.timer.tick;
-                networking.updatePlayer(this.name, this.pos.x, this.pos.y);
+                networking.updatePlayer({id:this.name,name:this.playerName}, this.pos.x, this.pos.y);
             } else {
                 this.vel.y = 0;
             }

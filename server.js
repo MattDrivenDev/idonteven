@@ -12,6 +12,7 @@ server.listen(port);
 
 var ws = new socketServer({ server: server });
 var users = [];
+var players = [];
 
 ws.on("connection", function(socket) {
 
@@ -19,11 +20,11 @@ ws.on("connection", function(socket) {
 
 	// Pings...
 	setInterval(function() { ws.ping(socket); }, 30000);
+	setInterval(function() { ws.updateAll(); }, 10);
 
 	// Echo messages...
 	socket.on("message", function(rawMessage) { 
 		var message = JSON.parse(rawMessage);
-		logger.info(message);
 		switch(message.type) {
 			case "chat":
 				ws.broadcast(message.user, message.data);
@@ -31,10 +32,33 @@ ws.on("connection", function(socket) {
 			case "join":
 				ws.register(socket, message.user);
 				break;
+			case "update":
+				ws.updateOne(message.data);
+				break;
 		} 
 	});
 
 });
+
+ws.updateOne = function(player) {
+	for(var i in this.players) {
+		if(this.players[i].user.id === player.user.id) {
+			players[i].X = player.X;
+			players[i].Y = player.Y;
+		} else {
+			players.push(player);
+		}
+	}
+};
+
+ws.updateAll = function() {
+	for(var i in this.clients) {
+		this.clients[i].send(JSON.stringify({
+			type: "updateAll",
+			data: players
+		}));
+	}
+};
 
 ws.broadcast = function(user, msg) {
 	logger.info("Broadcasting user message...");

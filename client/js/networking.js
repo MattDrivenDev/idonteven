@@ -18,12 +18,13 @@ var networking = {
 		ws.send(dataToSend);
 	},
 
-	updatePlayer: function(playername, x, y, onconnected, onerror) {
+	updatePlayer: function(user, x, y, onconnected, onerror) {
 
 		var data = {
-			messagetype : 'move',
+			type: "update",
+			user: user,
 			player: {
-				id: playername,
+				user: user,
 				X: x, Y: y
 			}
 		};
@@ -67,6 +68,24 @@ var networking = {
 						}
 					}
 					break;
+				case "updateAll":
+					var players = msg.data;
+					for(var i in players.length) {
+						var maybePlayer = players[i];
+						var player = me.game.world.getEntityByProp('name', maybePlayer.user.id);
+						if(player == null || player.length == 0) {
+							var newPlayer = new game.PlayerEntity(
+								maybePlayer.X, maybePlayer.Y,
+								{ image: "dude", spritewidth: 64, spriteheight: 64 },
+								maybePlayer.user.name, maybePlayer.user.id,
+								false
+							);
+							me.game.world.addChild(newPlayer);
+						} else {
+							player[0].pos.x = maybePlayer.X;
+							player[0].pos.y = maybePlayer.Y;
+						}
+					}
 			}
 
 
