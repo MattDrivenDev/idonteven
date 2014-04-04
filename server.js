@@ -41,13 +41,17 @@ ws.on("connection", function(socket) {
 });
 
 ws.updateOne = function(player) {
-	for(var i in this.players) {
-		if(this.players[i].user.id === player.user.id) {
+	var yes = false;
+	for(var i in players) {
+		if(players[i].user.id == player.user.id) {
 			players[i].X = player.X;
 			players[i].Y = player.Y;
-		} else {
-			players.push(player);
+			yes = true;
 		}
+	}
+	if(yes == false) {
+		logger.info("zero players is now one.");
+		players.push(player);
 	}
 };
 
@@ -95,5 +99,4 @@ ws.register = function(socket, user) {
 		type: "joinResponse",
 		data: user
 	}));
-	ws.broadcast({ name: "Azure" }, user.name + " has joined the room.");
 };

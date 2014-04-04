@@ -93,9 +93,10 @@ game.PlayerEntity = me.ObjectEntity.extend({
         this.updateMovement();
 
         //
-
-        this.bubble.pos.x = this.pos.x+32;
-        this.bubble.pos.y = this.pos.y-180;
+        if(this.bubble!=null&&this.bubble!=undefined) {
+            this.bubble.pos.x = this.pos.x+32;
+            this.bubble.pos.y = this.pos.y-180;
+        }
 
         // update animation if necessary
         if (this.vel.x != 0 || this.vel.y != 0) {
