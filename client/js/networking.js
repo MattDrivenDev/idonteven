@@ -36,6 +36,7 @@ var networking = {
 	connect: function(user, x, y, onconnected, onerror) {
 
 		var ghjk = false;
+
 		
 		ws = new WebSocket(host);
 		ws.onopen = function() {
@@ -71,22 +72,30 @@ var networking = {
 					}
 					break;
 				case "updateAll":
+					var players = msg.data;
 					for(var n in players) {
-						if(players[n].user.id != user.id) {
-							var character = me.game.world.getEntityByProp("name", players[n].user.id);
-							if(character == null || character.length == 0) {
-								var newPlayer = new game.PlayerEntity(
-									players[n].X, players[n].Y,
-									{ image: "dude", spritewidth: 64, spriteheight: 64 },
-									players[n].user.name, players[n].user.id,
-									false
-								);
-								me.game.world.addChild(newPlayer);
-							} else {
-								character[0].pos.x = players[n].X;
-								character[0].pos.y = players[n].Y;
+							if(players[n]) {
+								if(players[n].user) {
+									if(players[n].user.id) {
+										if(players[n].user.id != user.id) {
+											var character = me.game.world.getEntityByProp("name", players[n].user.id);
+											if(character == null || character.length == 0) {
+												var newPlayer = new game.PlayerEntity(
+													players[n].X, players[n].Y,
+													{ image: "dude", spritewidth: 64, spriteheight: 64 },
+													players[n].user.name, players[n].user.id,
+													false
+												);
+												console.log("new player from server: %s", players[n].user.name);
+												me.game.world.addChild(newPlayer);
+											} else {
+												character[0].pos.x = players[n].X;
+												character[0].pos.y = players[n].Y;
+											}
+										}s
+									}
+								}
 							}
-						}
 					}
 					break;
 					/*for(var i in players.length) {

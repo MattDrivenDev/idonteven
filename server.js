@@ -20,7 +20,7 @@ ws.on("connection", function(socket) {
 
 	// Pings...
 	setInterval(function() { ws.ping(socket); }, 30000);
-	setInterval(function() { ws.updateAll(); }, 10);
+	setInterval(function() { ws.updateAll(); }, 50);
 
 	// Echo messages...
 	socket.on("message", function(rawMessage) { 
@@ -41,17 +41,20 @@ ws.on("connection", function(socket) {
 });
 
 ws.updateOne = function(player) {
-	var yes = false;
+	var newPlayer = true;
+
 	for(var i in players) {
 		if(players[i].user.id == player.user.id) {
 			players[i].X = player.X;
 			players[i].Y = player.Y;
-			yes = true;
+			newPlayer = false;
 		}
 	}
-	if(yes == false) {
-		logger.info("zero players is now one.");
+
+	if(newPlayer) {
+		logger.info("New player %s", player.user.name);
 		players.push(player);
+		logger.info("Now up to %s players", players.length);
 	}
 };
 
