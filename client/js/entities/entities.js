@@ -13,6 +13,9 @@ game.PlayerEntity = me.ObjectEntity.extend({
         // call the constructor
         this.parent(x, y, settings);
 
+        console.log(name);
+        console.log(id);
+
         this.name = id;
 
         this.isPlayer = isplayer;
@@ -25,9 +28,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
         // set the default horizontal & vertical speed (accel vector)
         this.setVelocity(5,5);
 
-        this.bubble = new game.SpeechBubble(this.pos.x, this.pos.y, "this is a test of a really long bit of speech. it will be lmimted to 140 characters or some such shit, who knows.");
-        me.game.world.addChild(this.bubble);
-
+        
         this.font = new me.Font('helvetica,arial,sans-serif','16px','#ffffff','center');
 
         this.z = 10;
@@ -38,7 +39,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
         //window.playerEntity = this;
         this.playerName = name;
 
-        this.speak("arse");
+        this.alwaysUpdate = true;
     },
 
     /* -----
@@ -105,7 +106,7 @@ game.PlayerEntity = me.ObjectEntity.extend({
 
         // else inform the engine we did not perform
         // any update (e.g. position, animation)
-        return false;
+        return true;
     },
 
     draw: function (context) {
@@ -114,9 +115,13 @@ game.PlayerEntity = me.ObjectEntity.extend({
     },
 
     speak: function (text) {
+        console.log("speaking...");
+
+        if(this.bubble != null && this.bubble != undefined)
+            me.game.world.removeChild(this.bubble);
+
         this.bubble = new game.SpeechBubble(this.pos.x, this.pos.y, text);
-        //this.bubble.displayTimer = 200;
-        //this.bubble.visible = true;
+        me.game.world.addChild(this.bubble);
     }
 
 });
@@ -129,12 +134,13 @@ game.SpeechBubble = me.ObjectContainer.extend({
 
         this.font = new me.Font('helvetica,arial,sans-serif', '16px', '#000000');
 
-        this.z = 11;
+        this.z = 12;
 
-        var spr = new me.SpriteObject(0, 0, me.loader.getImage("bubble"), 300, 200);
+        this.bubbleSprite = new me.SpriteObject(x, y, me.loader.getImage("bubble"), 300, 200);
         //spr.floating = true;
-        spr.z = 12;
-        this.addChild(spr);
+        this.bubbleSprite.z = 11;
+        this.bubbleSprite.alwaysUpdate = true;
+        me.game.world.addChild(this.bubbleSprite);
 
         this.text = text;
 
@@ -142,19 +148,27 @@ game.SpeechBubble = me.ObjectContainer.extend({
         this.visible = true;
 
         this.alwaysUpdate = true;
+        console.log("have bubble");
     },
 
     update:function()
     {
         this.displayTimer -= me.timer.tick;
 
-        if (this.displayTimer <= 0) this.visible = false;
+        this.bubbleSprite.pos.x = this.pos.x;
+        this.bubbleSprite.pos.y = this.pos.y;
+
+        if (this.displayTimer <= 0) {
+
+            this.visible = false;
+            this.bubbleSprite.visible = false;
+
+        }
     },
 
     draw: function (context) {
         this.parent(context);
         this.font.draw(context, wrapText(context, this.text, 200), this.pos.x + 32, this.pos.y + 32);
-        
     }
 
 });

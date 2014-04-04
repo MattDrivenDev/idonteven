@@ -42,7 +42,7 @@ ws.broadcast = function(user, msg) {
 		this.clients[i].send(JSON.stringify({
 			type: "chat",
 			data: {
-				name: user.name,
+				user: user,
 				text: msg
 			}
 		}));
@@ -54,7 +54,10 @@ ws.ping = function(socket) {
 	socket.send(JSON.stringify({
 		type: "chat",
 		data: {
-			name: "Azure",
+			user: {
+				name: "Azure",
+				id: "azure"
+			},
 			text: "ping..."
 		}
 	}));
