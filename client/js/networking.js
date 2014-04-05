@@ -34,9 +34,6 @@ var networking = {
 	},
 
 	connect: function(user, x, y, onconnected, onerror) {
-
-		var ghjk = false;
-
 		
 		ws = new WebSocket(host);
 		ws.onopen = function() {
@@ -77,7 +74,7 @@ var networking = {
 							if(players[n]) {
 								if(players[n].user) {
 									if(players[n].user.id) {
-										if(players[n].user.id != user.id) {
+										if(players[n].user.id != window.player.id) {
 											var character = me.game.world.getEntityByProp("name", players[n].user.id);
 											if(character == null || character.length == 0) {
 												var newPlayer = new game.PlayerEntity(
@@ -92,7 +89,7 @@ var networking = {
 												character[0].pos.x = players[n].X;
 												character[0].pos.y = players[n].Y;
 											}
-										}s
+										}
 									}
 								}
 							}
